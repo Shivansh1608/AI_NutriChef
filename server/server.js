@@ -1,7 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -18,9 +18,6 @@ import recipeRouter from './routes/recipeRoutes.js';
 import mealPlanRouter from './routes/mealPlanRoutes.js';
 import groceryRouter from './routes/groceryRoutes.js';
 import chatRouter from './routes/chatRoutes.js';
-
-// Load Env
-dotenv.config();
 
 // Connect DB
 connectDB();
