@@ -1,41 +1,48 @@
+
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// Request Interceptor to append Authorization: Bearer JWT
+// Attach JWT token to requests
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response Interceptor to intercept global unauthorized responses (401)
+// Handle unauthorized responses
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Token expired or invalid, trigger logout on frontend
+    if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      // We can also redirect or dispatch an event if necessary
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/signup') {
+
+      if (
+        window.location.pathname !== '/login' &&
+        window.location.pathname !== '/signup'
+      ) {
         window.location.href = '/login';
       }
     }
+
     return Promise.reject(error);
   }
 );
