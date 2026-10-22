@@ -353,3 +353,5 @@ Add a license file to the repository if you intend to distribute this project un
 **Built with ❤️ using React, Node.js, MongoDB, and AI.**
 
 *AI NutriChef — Making healthy eating simpler, smarter, and more accessible.*
+
+live on vercel="ai-nutri-chef.vercel.app"
