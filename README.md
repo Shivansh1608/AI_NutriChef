@@ -354,4 +354,4 @@ Add a license file to the repository if you intend to distribute this project un
 
 *AI NutriChef — Making healthy eating simpler, smarter, and more accessible.*
 
-live on vercel="ai-nutri-chef.vercel.app"
+live on vercel:https://ai-nutri-chef.vercel.app
