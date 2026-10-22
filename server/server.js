@@ -25,10 +25,27 @@ connectDB();
 const app = express();
 const httpServer = createServer(app);
 
+// CORS configuration - Allow Vercel frontend, environment URL, and local dev
+const allowedOrigins = [
+  'https://ai-nutri-chef.vercel.app',
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 // Setup Socket.io
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -38,18 +55,6 @@ initChatSocket(io);
 
 // Security Headers
 app.use(helmet());
-
-// CORS configuration
-app.use(
-  cors({
-    origin: [
-      process.env.CLIENT_URL,
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-    ].filter(Boolean),
-    credentials: true,
-  })
-);
 
 // Morgan logger in development
 if (process.env.NODE_ENV === 'development') {
